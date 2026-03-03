@@ -60,25 +60,25 @@ export function InventoryOverviewCard({
   onShowStorage: () => void;
 }) {
   return (
-    <section className="panel-card flex min-h-[340px] flex-col p-4">
-      <header className="mb-3 flex items-start justify-between gap-3">
+    <section className="panel-card flex flex-col p-3">
+      <header className="mb-1 flex items-start justify-between gap-2">
         <div>
           <p className="section-kicker">Core Snapshot</p>
-          <h3 className="section-title">Inventory Overview</h3>
+          <h3 className="text-sm font-semibold text-[var(--ink)]">Inventory Overview</h3>
         </div>
       </header>
 
-      <div className="mb-2 flex flex-wrap gap-x-4 gap-y-1">
+      <div className="mb-1 flex flex-wrap gap-x-3 gap-y-0.5">
         {data.map((segment) => (
-          <p key={segment.name} className="inline-flex items-center gap-2 text-xs text-[var(--soft)]">
-            <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: segment.color }} />
+          <p key={segment.name} className="inline-flex items-center gap-1.5 text-[11px] text-[var(--soft)]">
+            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: segment.color }} />
             {segment.name}
-            <strong className="ml-1 text-[var(--ink)]">{segment.value.toLocaleString()}</strong>
+            <strong className="ml-0.5 text-[var(--ink)]">{segment.value.toLocaleString()}</strong>
           </p>
         ))}
       </div>
 
-      <div className="h-[210px]">
+      <div className="h-[150px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
@@ -104,12 +104,12 @@ export function InventoryOverviewCard({
         </ResponsiveContainer>
       </div>
 
-      <footer className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
-        <button className="action-chip action-chip-success" onClick={onShowDeployed}>
-          View Deployed Kits
+      <footer className="mt-2 grid grid-cols-2 gap-2">
+        <button className="action-chip action-chip-success text-[11px]" onClick={onShowDeployed}>
+          View Deployed
         </button>
-        <button className="action-chip action-chip-info" onClick={onShowStorage}>
-          View In-Storage Kits
+        <button className="action-chip action-chip-info text-[11px]" onClick={onShowStorage}>
+          View In-Storage
         </button>
       </footer>
     </section>
@@ -128,18 +128,18 @@ export function BreakdownCard({
   const total = items.reduce((sum, item) => sum + item.count, 0);
 
   return (
-    <section className="panel-card flex min-h-[255px] flex-col p-4">
-      <header className="mb-3">
-        <h3 className="section-title">{title}</h3>
+    <section className="panel-card flex flex-1 flex-col p-3">
+      <header className="mb-1">
+        <h3 className="text-sm font-semibold text-[var(--ink)]">{title}</h3>
       </header>
 
-      <div className="mb-2 flex flex-wrap gap-x-3 gap-y-1">
+      <div className="mb-1 flex flex-wrap gap-x-3 gap-y-0.5">
         {items.map((item) => {
           const percent = total ? ((item.count / total) * 100).toFixed(1) : "0.0";
           return (
-            <p key={item.label} className="inline-flex items-center gap-1.5 text-[11px] text-[var(--soft)]">
+            <p key={item.label} className="inline-flex items-center gap-1 text-[10px] text-[var(--soft)]">
               <span
-                className="h-2.5 w-2.5 rounded-full"
+                className="h-2 w-2 rounded-full"
                 style={{ backgroundColor: colorMap[item.label] || "#94a3b8" }}
               />
               {item.label}
@@ -150,7 +150,7 @@ export function BreakdownCard({
         })}
       </div>
 
-      <div className="h-[165px]">
+      <div className="min-h-0 flex-1" style={{ minHeight: 100 }}>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
@@ -181,31 +181,31 @@ export function BreakdownCard({
 
 export function HubSummaryCard({ hubSummaries }: { hubSummaries: HubSummary[] }) {
   return (
-    <section className="panel-card flex flex-col p-4">
-      <header className="mb-3 shrink-0">
+    <section className="panel-card flex h-full flex-col p-3">
+      <header className="mb-2 shrink-0">
         <p className="section-kicker">Distribution</p>
-        <h3 className="section-title">Stock by Storage Hub</h3>
+        <h3 className="text-sm font-semibold text-[var(--ink)]">Stock by Storage Hub</h3>
       </header>
 
       <div className="scroll-soft min-h-0 flex-1 overflow-y-auto">
-        <table className="w-full border-collapse text-xs">
+        <table className="w-full border-collapse text-[11px]">
           <thead className="sticky top-0 z-10 bg-[color:color-mix(in_srgb,var(--surface)_92%,transparent)] backdrop-blur">
-            <tr className="border-b border-[var(--line)] text-[10px] uppercase tracking-wide text-[var(--muted)]">
-              <th className="px-2 py-2 text-left">Hub</th>
-              <th className="px-2 py-2 text-center">Total</th>
-              <th className="px-2 py-2 text-center text-emerald-600">Out</th>
-              <th className="px-2 py-2 text-center text-sky-600">In</th>
+            <tr className="border-b border-[var(--line)] text-[9px] uppercase tracking-wide text-[var(--muted)]">
+              <th className="px-2 py-1.5 text-left">Hub</th>
+              <th className="px-2 py-1.5 text-center">Total</th>
+              <th className="px-2 py-1.5 text-center text-emerald-600">Out</th>
+              <th className="px-2 py-1.5 text-center text-sky-600">In</th>
             </tr>
           </thead>
           <tbody>
             {hubSummaries.map((hub) => (
               <tr key={hub.hub} className="border-b border-[var(--line)]/60 transition-colors hover:bg-[var(--surface-2)]">
-                <td className="max-w-[220px] truncate px-2 py-2 font-medium text-[var(--ink)]" title={hub.hub}>
+                <td className="max-w-[180px] truncate px-2 py-1.5 font-medium text-[var(--ink)]" title={hub.hub}>
                   {hub.hub}
                 </td>
-                <td className="px-2 py-2 text-center font-semibold text-[var(--ink)]">{hub.total}</td>
-                <td className="px-2 py-2 text-center font-semibold text-emerald-600">{hub.deployed}</td>
-                <td className="px-2 py-2 text-center font-semibold text-sky-600">{hub.undeployed}</td>
+                <td className="px-2 py-1.5 text-center font-semibold text-[var(--ink)]">{hub.total}</td>
+                <td className="px-2 py-1.5 text-center font-semibold text-emerald-600">{hub.deployed}</td>
+                <td className="px-2 py-1.5 text-center font-semibold text-sky-600">{hub.undeployed}</td>
               </tr>
             ))}
           </tbody>

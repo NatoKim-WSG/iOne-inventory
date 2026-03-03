@@ -152,7 +152,7 @@ export default function DashboardPage() {
     <div className="monitor-root" data-theme={dark ? "dark" : "light"}>
       <div className="monitor-backdrop" />
 
-      <div className={`relative z-10 flex flex-col ${viewMode === "map" ? "h-screen" : "min-h-screen"}`}>
+      <div className="relative z-10 flex h-screen flex-col">
         <header className="monitor-header px-3 py-2 lg:px-4">
           <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-3">
@@ -212,23 +212,23 @@ export default function DashboardPage() {
               kits={globalSearchResults}
             />
           ) : (
-            <section className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-              <div className="min-h-0 lg:col-span-4">
+            <section className="grid h-full min-h-0 grid-cols-1 gap-3 lg:grid-cols-12">
+              <div className="min-h-0 lg:col-span-3">
                 <HubSummaryCard hubSummaries={data.hubSummaries} />
               </div>
 
-              <div className="min-h-0 lg:col-span-4">
+              <div className="flex min-h-0 flex-col gap-3 lg:col-span-4">
                 <InventoryOverviewCard
                   data={pieData}
                   onShowDeployed={() => setModalFilter("deployed")}
                   onShowStorage={() => setModalFilter("storage")}
                 />
+                <BreakdownCard title="Deployed by Generation" items={data.deployedByGen} colorMap={GEN_COLORS} />
               </div>
 
-              <div className="grid min-h-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-4 lg:grid-cols-1">
+              <div className="flex min-h-0 flex-col gap-3 lg:col-span-5">
                 <BreakdownCard title="Kit Condition" items={data.conditionBreakdown} colorMap={CONDITION_COLORS} />
                 <BreakdownCard title="Starlink Model" items={data.modelBreakdown} colorMap={MODEL_COLORS} />
-                <BreakdownCard title="Deployed by Generation" items={data.deployedByGen} colorMap={GEN_COLORS} />
               </div>
             </section>
           )}
