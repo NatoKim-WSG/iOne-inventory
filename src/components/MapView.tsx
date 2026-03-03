@@ -291,8 +291,41 @@ export default function MapView({ kits, dark, swipCoords }: MapViewProps) {
       }
 
       marker.bindPopup(popupHtml, { maxWidth: 300, className: "kit-popup" });
+
+      // Tooltip on hover
+      const tooltipLabel = isHubGroup
+        ? `${group.storageHub || locationName} — ${group.stored} in stock`
+        : `${locationName} — ${group.deployed} deployed${group.stored ? `, ${group.stored} stored` : ""}`;
+      marker.bindTooltip(tooltipLabel, {
+        direction: "top",
+        offset: [0, -18],
+        className: "kit-tooltip",
+      });
+
       clusterGroup.addLayer(marker);
     }
+
+    // Show tooltip on cluster hover
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    clusterGroup.on("clustermouseover", (e: any) => {
+      const cluster = e.layer;
+      const markers = cluster.getAllChildMarkers();
+      let dep = 0;
+      let sto = 0;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      for (const m of markers as any[]) {
+        if (m._kitData) {
+          dep += m._kitData.deployed;
+          sto += m._kitData.stored;
+        }
+      }
+      const total = dep + sto;
+      const label = `${total.toLocaleString()} kits — ${dep.toLocaleString()} deployed, ${sto.toLocaleString()} stored`;
+      cluster.bindTooltip(label, { direction: "top", offset: [0, -20], className: "kit-tooltip" }).openTooltip();
+    });
+    clusterGroup.on("clustermouseout", (e: { layer: L.Marker }) => {
+      e.layer.closeTooltip();
+    });
 
     map.addLayer(clusterGroup);
     clusterRef.current = clusterGroup;

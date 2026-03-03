@@ -203,6 +203,21 @@ body {
   padding: 0 !important;
 }
 
+.kit-tooltip {
+  background: rgba(15, 23, 42, 0.92) !important;
+  color: #f1f5f9 !important;
+  border: 1px solid rgba(148, 163, 184, 0.25) !important;
+  border-radius: 8px !important;
+  padding: 5px 10px !important;
+  font-size: 11px !important;
+  font-family: var(--font-sans), sans-serif !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.kit-tooltip::before {
+  border-top-color: rgba(15, 23, 42, 0.92) !important;
+}
+
 .leaflet-container {
   z-index: 0;
 }
