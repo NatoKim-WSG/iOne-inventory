@@ -193,9 +193,9 @@ export async function getInventoryData(): Promise<DashboardData> {
       .filter((h) => h.length > 0)
   );
 
-  // Hub breakdown by condition
+  // Hub breakdown by condition (only non-deployed kits)
   const hubMap = new Map<string, { brandNew: number; used: number; unspecified: number }>();
-  for (const row of inventory) {
+  for (const row of undeployed) {
     const rawHub = row.storageHub || "Unassigned";
     const hub = rawHub.replace(/\s*\d+\s*$/, "").trim() || rawHub;
     if (!hubMap.has(hub)) {
