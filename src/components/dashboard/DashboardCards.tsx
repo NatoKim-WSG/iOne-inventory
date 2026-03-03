@@ -40,11 +40,11 @@ export function MetricCard({
   };
 
   return (
-    <article className="panel-card flex items-center gap-3 px-4 py-3">
-      <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${toneClass[tone]}`} />
+    <article className="panel-card flex items-center gap-2 px-3 py-2">
+      <span className={`h-2 w-2 shrink-0 rounded-full ${toneClass[tone]}`} />
       <div>
-        <p className="text-[11px] uppercase tracking-[0.08em] text-[var(--muted)]">{label}</p>
-        <p className="text-2xl font-semibold leading-tight text-[var(--ink)]">{value.toLocaleString()}</p>
+        <p className="text-[9px] uppercase tracking-[0.08em] text-[var(--muted)]">{label}</p>
+        <p className="text-lg font-semibold leading-tight text-[var(--ink)]">{value.toLocaleString()}</p>
       </div>
     </article>
   );
@@ -181,13 +181,13 @@ export function BreakdownCard({
 
 export function HubSummaryCard({ hubSummaries }: { hubSummaries: HubSummary[] }) {
   return (
-    <section className="panel-card flex min-h-[340px] flex-col p-4">
-      <header className="mb-3">
+    <section className="panel-card flex h-full max-h-[calc(100vh-180px)] flex-col p-4">
+      <header className="mb-3 shrink-0">
         <p className="section-kicker">Distribution</p>
         <h3 className="section-title">Stock by Storage Hub</h3>
       </header>
 
-      <div className="scroll-soft flex-1 overflow-auto">
+      <div className="scroll-soft min-h-0 flex-1 overflow-y-auto">
         <table className="w-full border-collapse text-xs">
           <thead className="sticky top-0 z-10 bg-[color:color-mix(in_srgb,var(--surface)_92%,transparent)] backdrop-blur">
             <tr className="border-b border-[var(--line)] text-[10px] uppercase tracking-wide text-[var(--muted)]">

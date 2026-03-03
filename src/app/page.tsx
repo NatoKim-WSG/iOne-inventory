@@ -153,24 +153,26 @@ export default function DashboardPage() {
       <div className="monitor-backdrop" />
 
       <div className="relative z-10 flex h-screen flex-col">
-        <header className="monitor-header px-4 py-3 lg:px-6">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="section-kicker">iOne Starlink Inventory</p>
-              <h1 className="text-2xl font-semibold tracking-tight text-[var(--ink)] lg:text-3xl">
-                Monitoring Console
-              </h1>
-              <p className="section-subtitle">Live stock, deployment, and location visibility.</p>
+        <header className="monitor-header px-3 py-2 lg:px-4">
+          <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center gap-3">
+              <div>
+                <h1 className="text-base font-semibold tracking-tight text-[var(--ink)] lg:text-lg leading-tight">
+                  iOne Starlink Inventory
+                </h1>
+                <p className="text-[10px] text-[var(--muted)]">Live stock, deployment & location visibility &middot; {data.lastUpdated}</p>
+              </div>
+              <span className="rounded-full border border-amber-400/40 bg-amber-400/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-amber-600">Under Development</span>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2 lg:justify-end">
-              <div className="input-shell min-w-[260px] flex-1 lg:max-w-sm">
+            <div className="flex flex-wrap items-center gap-1.5 lg:justify-end">
+              <div className="input-shell min-w-[200px] flex-1 lg:max-w-xs">
                 <input
                   type="text"
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
-                  placeholder="Search kit, location, project, model..."
-                  className="w-full bg-transparent px-3 py-2 text-sm text-[var(--ink)] outline-none placeholder:text-[var(--muted)]"
+                  placeholder="Search kit, location, project..."
+                  className="w-full bg-transparent px-2 py-1 text-xs text-[var(--ink)] outline-none placeholder:text-[var(--muted)]"
                 />
               </div>
 
@@ -180,12 +182,10 @@ export default function DashboardPage() {
               <button className={`chip-btn ${dark ? "chip-btn-active" : ""}`} onClick={() => setDark((value) => !value)}>{dark ? "Light" : "Dark"}</button>
             </div>
           </div>
-
-          <p className="mt-2 text-xs text-[var(--muted)]">Last updated: {data.lastUpdated}</p>
         </header>
 
-        <section className="px-4 pb-4 lg:px-6">
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-6">
+        <section className="px-3 pb-2 lg:px-4">
+          <div className="grid grid-cols-3 gap-2 lg:grid-cols-6">
             <MetricCard label="Total Kits" value={data.totalKits} tone="neutral" />
             <MetricCard label="Deployed" value={data.totalDeployed} tone="success" />
             <MetricCard label="In Storage" value={data.totalUndeployed} tone="info" />
@@ -195,7 +195,7 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        <main className="min-h-0 flex-1 px-4 pb-4 lg:px-6">
+        <main className="min-h-0 flex-1 px-3 pb-3 lg:px-4">
           {viewMode === "map" ? (
             <section className="panel-card relative h-full overflow-hidden p-0">
               <MapViewDynamic kits={shownKits} dark={dark} swipCoords={data.swipCoords} />
