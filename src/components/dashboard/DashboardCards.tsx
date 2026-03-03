@@ -216,9 +216,10 @@ export function BarBreakdownCard({
             />
             <Tooltip
               contentStyle={tooltipStyle}
-              formatter={(value: number) => {
-                const pct = total ? ((value / total) * 100).toFixed(1) : "0";
-                return [`${value.toLocaleString()} (${pct}%)`, "Count"];
+              formatter={(value: number | undefined) => {
+                const v = value ?? 0;
+                const pct = total ? ((v / total) * 100).toFixed(1) : "0";
+                return [`${v.toLocaleString()} (${pct}%)`, "Count"];
               }}
             />
             <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={18}>
