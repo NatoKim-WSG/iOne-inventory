@@ -252,19 +252,21 @@ export function HubSummaryCard({ hubSummaries }: { hubSummaries: HubSummary[] })
             <tr className="border-b border-[var(--line)] text-[9px] uppercase tracking-wide text-[var(--muted)]">
               <th className="px-2 py-1.5 text-left">Hub</th>
               <th className="px-2 py-1.5 text-center">Total</th>
-              <th className="px-2 py-1.5 text-center text-emerald-600">Out</th>
-              <th className="px-2 py-1.5 text-center text-sky-600">In</th>
+              <th className="px-2 py-1.5 text-center text-emerald-600">New</th>
+              <th className="px-2 py-1.5 text-center text-amber-600">Used</th>
+              <th className="px-2 py-1.5 text-center text-slate-500">N/A</th>
             </tr>
           </thead>
           <tbody>
             {hubSummaries.map((hub) => (
               <tr key={hub.hub} className="border-b border-[var(--line)]/60 transition-colors hover:bg-[var(--surface-2)]">
-                <td className="max-w-[180px] truncate px-2 py-1.5 font-medium text-[var(--ink)]" title={hub.hub}>
+                <td className="max-w-[200px] truncate px-2 py-1.5 font-medium text-[var(--ink)]" title={hub.hub}>
                   {hub.hub}
                 </td>
                 <td className="px-2 py-1.5 text-center font-semibold text-[var(--ink)]">{hub.total}</td>
-                <td className="px-2 py-1.5 text-center font-semibold text-emerald-600">{hub.deployed}</td>
-                <td className="px-2 py-1.5 text-center font-semibold text-sky-600">{hub.undeployed}</td>
+                <td className="px-2 py-1.5 text-center font-semibold text-emerald-600">{hub.brandNew || <span className="text-[var(--muted)]">-</span>}</td>
+                <td className="px-2 py-1.5 text-center font-semibold text-amber-600">{hub.used || <span className="text-[var(--muted)]">-</span>}</td>
+                <td className="px-2 py-1.5 text-center font-semibold text-slate-500">{hub.unspecified || <span className="text-[var(--muted)]">-</span>}</td>
               </tr>
             ))}
           </tbody>

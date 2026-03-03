@@ -214,11 +214,11 @@ export default function DashboardPage() {
             />
           ) : (
             <section className="grid h-full min-h-0 grid-cols-1 gap-3 lg:grid-cols-12">
-              <div className="min-h-0 lg:col-span-3">
+              <div className="min-h-0 lg:col-span-5">
                 <HubSummaryCard hubSummaries={data.hubSummaries} />
               </div>
 
-              <div className="flex min-h-0 flex-col gap-3 lg:col-span-4">
+              <div className="flex min-h-0 flex-col gap-3 lg:col-span-3">
                 <InventoryOverviewCard
                   data={pieData}
                   onShowDeployed={() => setModalFilter("deployed")}
@@ -227,7 +227,7 @@ export default function DashboardPage() {
                 <BreakdownCard title="Deployed by Generation" items={data.deployedByGen} colorMap={GEN_COLORS} />
               </div>
 
-              <div className="flex min-h-0 flex-col gap-3 lg:col-span-5">
+              <div className="flex min-h-0 flex-col gap-3 lg:col-span-4">
                 <BarBreakdownCard title="Kit Condition" items={data.conditionBreakdown} colorMap={CONDITION_COLORS} />
                 <BreakdownCard title="Starlink Model" items={data.modelBreakdown} colorMap={MODEL_COLORS} />
               </div>

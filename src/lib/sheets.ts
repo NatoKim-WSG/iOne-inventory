@@ -37,9 +37,10 @@ export interface KitInfo {
 
 interface HubSummary {
   hub: string;
-  deployed: number;
-  undeployed: number;
   total: number;
+  brandNew: number;
+  used: number;
+  unspecified: number;
 }
 
 interface BreakdownItem {
@@ -192,28 +193,32 @@ export async function getInventoryData(): Promise<DashboardData> {
       .filter((h) => h.length > 0)
   );
 
-  // Hub breakdown
-  const hubMap = new Map<string, { deployed: number; undeployed: number }>();
+  // Hub breakdown by condition
+  const hubMap = new Map<string, { brandNew: number; used: number; unspecified: number }>();
   for (const row of inventory) {
     const rawHub = row.storageHub || "Unassigned";
     const hub = rawHub.replace(/\s*\d+\s*$/, "").trim() || rawHub;
     if (!hubMap.has(hub)) {
-      hubMap.set(hub, { deployed: 0, undeployed: 0 });
+      hubMap.set(hub, { brandNew: 0, used: 0, unspecified: 0 });
     }
     const entry = hubMap.get(hub)!;
-    if (row.status.toLowerCase() === "deployed") {
-      entry.deployed++;
+    const cond = row.condition.toLowerCase();
+    if (cond === "brand new") {
+      entry.brandNew++;
+    } else if (cond === "used") {
+      entry.used++;
     } else {
-      entry.undeployed++;
+      entry.unspecified++;
     }
   }
 
   const hubSummaries: HubSummary[] = Array.from(hubMap.entries())
     .map(([hub, counts]) => ({
       hub,
-      deployed: counts.deployed,
-      undeployed: counts.undeployed,
-      total: counts.deployed + counts.undeployed,
+      total: counts.brandNew + counts.used + counts.unspecified,
+      brandNew: counts.brandNew,
+      used: counts.used,
+      unspecified: counts.unspecified,
     }))
     .sort((a, b) => b.total - a.total);
 

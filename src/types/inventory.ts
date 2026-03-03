@@ -16,9 +16,10 @@ export interface KitInfo {
 
 export interface HubSummary {
   hub: string;
-  deployed: number;
-  undeployed: number;
   total: number;
+  brandNew: number;
+  used: number;
+  unspecified: number;
 }
 
 export interface BreakdownItem {
