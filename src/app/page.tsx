@@ -152,7 +152,7 @@ export default function DashboardPage() {
     <div className="monitor-root" data-theme={dark ? "dark" : "light"}>
       <div className="monitor-backdrop" />
 
-      <div className="relative z-10 flex h-screen flex-col">
+      <div className={`relative z-10 flex flex-col ${viewMode === "map" ? "h-screen" : "min-h-screen"}`}>
         <header className="monitor-header px-3 py-2 lg:px-4">
           <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-3">
@@ -184,7 +184,7 @@ export default function DashboardPage() {
           </div>
         </header>
 
-        <section className="px-3 pb-2 lg:px-4">
+        <section className="mt-2 px-3 pb-2 lg:px-4">
           <div className="grid grid-cols-3 gap-2 lg:grid-cols-6">
             <MetricCard label="Total Kits" value={data.totalKits} tone="neutral" />
             <MetricCard label="Deployed" value={data.totalDeployed} tone="success" />
@@ -212,7 +212,7 @@ export default function DashboardPage() {
               kits={globalSearchResults}
             />
           ) : (
-            <section className="grid h-full min-h-0 grid-cols-1 gap-4 lg:grid-cols-12">
+            <section className="grid grid-cols-1 gap-4 lg:grid-cols-12">
               <div className="min-h-0 lg:col-span-4">
                 <HubSummaryCard hubSummaries={data.hubSummaries} />
               </div>

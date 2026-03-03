@@ -181,7 +181,7 @@ export function BreakdownCard({
 
 export function HubSummaryCard({ hubSummaries }: { hubSummaries: HubSummary[] }) {
   return (
-    <section className="panel-card flex h-full max-h-[calc(100vh-180px)] flex-col p-4">
+    <section className="panel-card flex flex-col p-4">
       <header className="mb-3 shrink-0">
         <p className="section-kicker">Distribution</p>
         <h3 className="section-title">Stock by Storage Hub</h3>
