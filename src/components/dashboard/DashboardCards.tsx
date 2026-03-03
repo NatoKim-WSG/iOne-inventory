@@ -78,7 +78,7 @@ export function InventoryOverviewCard({
         ))}
       </div>
 
-      <div className="min-h-[210px] flex-1">
+      <div className="h-[210px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
@@ -150,7 +150,7 @@ export function BreakdownCard({
         })}
       </div>
 
-      <div className="min-h-[165px] flex-1">
+      <div className="h-[165px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
