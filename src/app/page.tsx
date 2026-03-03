@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import MapViewDynamic from "@/components/MapViewDynamic";
 import {
+  BarBreakdownCard,
   BreakdownCard,
   HubSummaryCard,
   InventoryOverviewCard,
@@ -227,7 +228,7 @@ export default function DashboardPage() {
               </div>
 
               <div className="flex min-h-0 flex-col gap-3 lg:col-span-5">
-                <BreakdownCard title="Kit Condition" items={data.conditionBreakdown} colorMap={CONDITION_COLORS} />
+                <BarBreakdownCard title="Kit Condition" items={data.conditionBreakdown} colorMap={CONDITION_COLORS} />
                 <BreakdownCard title="Starlink Model" items={data.modelBreakdown} colorMap={MODEL_COLORS} />
               </div>
             </section>

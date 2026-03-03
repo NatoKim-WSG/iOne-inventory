@@ -1,11 +1,16 @@
 "use client";
 
 import {
+  Bar,
+  BarChart,
+  CartesianGrid,
   Cell,
   Pie,
   PieChart,
   ResponsiveContainer,
   Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
 import type { BreakdownItem, HubSummary } from "@/types/inventory";
 
@@ -60,7 +65,7 @@ export function InventoryOverviewCard({
   onShowStorage: () => void;
 }) {
   return (
-    <section className="panel-card flex flex-col p-3">
+    <section className="panel-card flex flex-[2] flex-col p-3">
       <header className="mb-1 flex items-start justify-between gap-2">
         <div>
           <p className="section-kicker">Core Snapshot</p>
@@ -78,7 +83,7 @@ export function InventoryOverviewCard({
         ))}
       </div>
 
-      <div className="h-[150px]">
+      <div className="min-h-0 flex-1" style={{ minHeight: 130 }}>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
@@ -173,6 +178,59 @@ export function BreakdownCard({
             </Pie>
             <Tooltip contentStyle={tooltipStyle} />
           </PieChart>
+        </ResponsiveContainer>
+      </div>
+    </section>
+  );
+}
+
+export function BarBreakdownCard({
+  title,
+  items,
+  colorMap,
+}: {
+  title: string;
+  items: BreakdownItem[];
+  colorMap: Record<string, string>;
+}) {
+  const total = items.reduce((sum, item) => sum + item.count, 0);
+
+  return (
+    <section className="panel-card flex flex-1 flex-col p-3">
+      <header className="mb-1">
+        <h3 className="text-sm font-semibold text-[var(--ink)]">{title}</h3>
+      </header>
+
+      <div className="min-h-0 flex-1" style={{ minHeight: 100 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={items} layout="vertical" margin={{ top: 4, right: 8, bottom: 4, left: 4 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--line)" horizontal={false} />
+            <XAxis type="number" hide />
+            <YAxis
+              type="category"
+              dataKey="label"
+              width={75}
+              tick={{ fontSize: 10, fill: "var(--soft)" }}
+              axisLine={false}
+              tickLine={false}
+            />
+            <Tooltip
+              contentStyle={tooltipStyle}
+              formatter={(value: number) => {
+                const pct = total ? ((value / total) * 100).toFixed(1) : "0";
+                return [`${value.toLocaleString()} (${pct}%)`, "Count"];
+              }}
+            />
+            <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={18}>
+              {items.map((item) => (
+                <Cell
+                  key={item.label}
+                  fill={colorMap[item.label] || "#94a3b8"}
+                  fillOpacity={0.6}
+                />
+              ))}
+            </Bar>
+          </BarChart>
         </ResponsiveContainer>
       </div>
     </section>
