@@ -1,0 +1,226 @@
+@import "tailwindcss";
+
+:root {
+  --font-sans: var(--font-sora);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-sans), "Segoe UI", sans-serif;
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.monitor-root {
+  position: relative;
+  overflow: hidden;
+}
+
+.monitor-root[data-theme="light"] {
+  --bg-start: #eef4ff;
+  --bg-end: #fdf4ea;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --line: #dbe3f0;
+  --ink: #0f172a;
+  --soft: #334155;
+  --muted: #64748b;
+}
+
+.monitor-root[data-theme="dark"] {
+  --bg-start: #0b1220;
+  --bg-end: #151f2f;
+  --surface: #101a2a;
+  --surface-2: #172336;
+  --line: #28354c;
+  --ink: #e2e8f0;
+  --soft: #cbd5e1;
+  --muted: #94a3b8;
+}
+
+.monitor-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.22), transparent 45%),
+    radial-gradient(circle at 90% 10%, rgba(249, 115, 22, 0.24), transparent 40%),
+    linear-gradient(160deg, var(--bg-start), var(--bg-end));
+}
+
+.monitor-header {
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.panel-card {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 96%, transparent);
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+}
+
+.section-kicker {
+  margin: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.section-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.section-subtitle {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.input-shell {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 98%, transparent);
+  border-radius: 12px;
+}
+
+.chip-btn {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  color: var(--soft);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 160ms ease;
+}
+
+.chip-btn:hover {
+  background: var(--surface-2);
+}
+
+.chip-btn-active {
+  border-color: rgba(14, 165, 233, 0.5);
+  background: rgba(14, 165, 233, 0.16);
+  color: #0284c7;
+}
+
+.chip-btn-live {
+  border-color: rgba(16, 185, 129, 0.45);
+  background: rgba(16, 185, 129, 0.18);
+  color: #047857;
+}
+
+.action-chip {
+  border-radius: 10px;
+  border: 1px solid transparent;
+  padding: 9px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 160ms ease;
+}
+
+.action-chip-success {
+  border-color: rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.16);
+  color: #047857;
+}
+
+.action-chip-info {
+  border-color: rgba(14, 165, 233, 0.35);
+  background: rgba(14, 165, 233, 0.16);
+  color: #0369a1;
+}
+
+.action-chip-danger {
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.16);
+  color: #b91c1c;
+}
+
+.action-chip:hover {
+  transform: translateY(-1px);
+}
+
+.scroll-soft {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.5) transparent;
+}
+
+.scroll-soft::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scroll-soft::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.45);
+  border-radius: 999px;
+}
+
+.scroll-soft::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+  background: transparent !important;
+}
+
+.marker-cluster-small div,
+.marker-cluster-medium div,
+.marker-cluster-large div,
+.pie-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.2) !important;
+}
+
+.leaflet-popup-content {
+  margin: 10px 12px !important;
+  font-family: var(--font-sans), sans-serif;
+}
+
+.kit-popup .leaflet-popup-content-wrapper {
+  padding: 0 !important;
+}
+
+.leaflet-container {
+  z-index: 0;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.28) !important;
+}
+
+.leaflet-control-zoom a {
+  border-radius: 8px !important;
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  font-size: 16px !important;
+}
+
+@media (max-width: 1024px) {
+  .panel-card {
+    border-radius: 14px;
+  }
+}
