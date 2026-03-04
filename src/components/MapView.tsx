@@ -183,7 +183,7 @@ export default function MapView({ kits, dark, swipCoords }: MapViewProps) {
       chunkedLoading: true,
       maxClusterRadius: 50,
       spiderfyOnMaxZoom: true,
-      showCoverageOnHover: false,
+      showCoverageOnHover: true,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       iconCreateFunction: (cluster: any) => {
         const markers = cluster.getAllChildMarkers();
@@ -217,6 +217,7 @@ export default function MapView({ kits, dark, swipCoords }: MapViewProps) {
       (marker as any)._kitData = {
         deployed: group.deployed,
         stored: group.stored,
+        province: group.province,
       };
 
       // Build popup content
@@ -312,15 +313,18 @@ export default function MapView({ kits, dark, swipCoords }: MapViewProps) {
       const markers = cluster.getAllChildMarkers();
       let dep = 0;
       let sto = 0;
+      const provinces = new Set<string>();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       for (const m of markers as any[]) {
         if (m._kitData) {
           dep += m._kitData.deployed;
           sto += m._kitData.stored;
+          if (m._kitData.province) provinces.add(m._kitData.province);
         }
       }
       const total = dep + sto;
-      const label = `${total.toLocaleString()} kits — ${dep.toLocaleString()} deployed, ${sto.toLocaleString()} stored`;
+      const provLabel = provinces.size <= 3 ? [...provinces].join(", ") : `${[...provinces].slice(0, 2).join(", ")} +${provinces.size - 2} more`;
+      const label = `<strong>${provLabel || "Multiple locations"}</strong><br>${total.toLocaleString()} kits — ${dep.toLocaleString()} deployed, ${sto.toLocaleString()} stored`;
       cluster.bindTooltip(label, { direction: "top", offset: [0, -20], className: "kit-tooltip" }).openTooltip();
     });
     clusterGroup.on("clustermouseout", (e: { layer: L.Marker }) => {
