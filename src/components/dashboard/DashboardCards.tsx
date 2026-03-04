@@ -22,10 +22,11 @@ interface PieSegment {
 
 const tooltipStyle = {
   borderRadius: "10px",
-  border: "1px solid rgba(148, 163, 184, 0.35)",
-  backgroundColor: "rgba(15, 23, 42, 0.96)",
-  color: "#f8fafc",
+  border: "1px solid rgba(203, 213, 225, 0.4)",
+  backgroundColor: "#ffffff",
+  color: "#1e293b",
   fontSize: "12px",
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
 };
 
 export function MetricCard({
