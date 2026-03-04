@@ -94,7 +94,14 @@ export default function DashboardPage() {
     return () => clearInterval(interval);
   }, [autoRefresh, fetchData]);
 
-  const searchTerm = search.trim();
+  // Debounce search for performance
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(search.trim()), 250);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const searchTerm = debouncedSearch;
 
   const globalSearchResults = useMemo(() => {
     if (!data || !searchTerm) {
