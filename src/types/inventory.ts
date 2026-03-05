@@ -35,7 +35,7 @@ export interface DashboardData {
   totalNew: number;
   totalUsed: number;
   hubSummaries: HubSummary[];
-  deployedByGen: BreakdownItem[];
+  serviceCategories: BreakdownItem[];
   conditionBreakdown: BreakdownItem[];
   modelBreakdown: BreakdownItem[];
   kits: KitInfo[];

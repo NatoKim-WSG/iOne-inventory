@@ -56,15 +56,63 @@ export function MetricCard({
   );
 }
 
+interface OverviewFilters {
+  model: string;
+  category: string;
+  project: string;
+}
+
+interface FilterOptions {
+  models: string[];
+  categories: string[];
+  projects: string[];
+}
+
+function FilterSelect({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  options: string[];
+  onChange: (val: string) => void;
+}) {
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="w-full rounded-md border border-[var(--line)] bg-[var(--surface)] px-2 py-1 text-[10px] text-[var(--ink)] outline-none focus:border-sky-400"
+      title={label}
+    >
+      <option value="">All {label}</option>
+      {options.map((opt) => (
+        <option key={opt} value={opt}>{opt}</option>
+      ))}
+    </select>
+  );
+}
+
 export function InventoryOverviewCard({
   data,
   onShowDeployed,
   onShowStorage,
+  filters,
+  filterOptions,
+  onFilterChange,
+  onClearFilters,
 }: {
   data: PieSegment[];
   onShowDeployed: () => void;
   onShowStorage: () => void;
+  filters: OverviewFilters;
+  filterOptions: FilterOptions;
+  onFilterChange: (key: "model" | "category" | "project", value: string) => void;
+  onClearFilters: () => void;
 }) {
+  const hasFilters = !!(filters.model || filters.category || filters.project);
+
   return (
     <section className="panel-card flex flex-[2] flex-col p-3">
       <header className="mb-1 flex items-start justify-between gap-2">
@@ -72,7 +120,21 @@ export function InventoryOverviewCard({
           <p className="section-kicker">Core Snapshot</p>
           <h3 className="text-sm font-semibold text-[var(--ink)]">Inventory Overview</h3>
         </div>
+        {hasFilters && (
+          <button
+            className="rounded-md border border-[var(--line)] px-1.5 py-0.5 text-[9px] text-[var(--muted)] hover:text-[var(--ink)] transition-colors"
+            onClick={onClearFilters}
+          >
+            Clear filters
+          </button>
+        )}
       </header>
+
+      <div className="mb-2 grid grid-cols-1 gap-1">
+        <FilterSelect label="Model" value={filters.model} options={filterOptions.models} onChange={(v) => onFilterChange("model", v)} />
+        <FilterSelect label="Service Category" value={filters.category} options={filterOptions.categories} onChange={(v) => onFilterChange("category", v)} />
+        <FilterSelect label="Project" value={filters.project} options={filterOptions.projects} onChange={(v) => onFilterChange("project", v)} />
+      </div>
 
       <div className="mb-1 flex flex-wrap gap-x-3 gap-y-0.5">
         {data.map((segment) => (

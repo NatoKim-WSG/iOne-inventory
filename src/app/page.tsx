@@ -15,10 +15,11 @@ import type { DashboardData, KitInfo } from "@/types/inventory";
 
 const PIE_COLORS = ["#16a34a", "#0284c7"];
 
-const GEN_COLORS: Record<string, string> = {
-  "Gen 3": "#0ea5e9",
-  "Gen 2": "#f59e0b",
-  Other: "#64748b",
+const SERVICE_CAT_COLORS: Record<string, string> = {
+  "Manage Service": "#0ea5e9",
+  Sold: "#ef4444",
+  "Demo/POC": "#f59e0b",
+  Unspecified: "#64748b",
 };
 
 const CONDITION_COLORS: Record<string, string> = {
@@ -64,6 +65,9 @@ export default function DashboardPage() {
   const [viewMode, setViewMode] = useState<"dashboard" | "map">("dashboard");
   const [modalFilter, setModalFilter] = useState<"deployed" | "storage" | null>(null);
   const [search, setSearch] = useState("");
+  const [filterModel, setFilterModel] = useState("");
+  const [filterCategory, setFilterCategory] = useState("");
+  const [filterProject, setFilterProject] = useState("");
 
   const fetchData = useCallback(async () => {
     try {
@@ -110,13 +114,50 @@ export default function DashboardPage() {
     return data.kits.filter((kit) => matchesSearch(kit, searchTerm));
   }, [data, searchTerm]);
 
+  const applyKitFilters = useCallback((kits: KitInfo[]) => {
+    return kits.filter((kit) => {
+      if (filterModel && kit.model !== filterModel) return false;
+      if (filterCategory && kit.serviceCategory !== filterCategory) return false;
+      if (filterProject && kit.project !== filterProject) return false;
+      return true;
+    });
+  }, [filterModel, filterCategory, filterProject]);
+
+  const filterOptions = useMemo(() => {
+    if (!data) return { models: [] as string[], categories: [] as string[], projects: [] as string[] };
+    const models = [...new Set(data.kits.map((k) => k.model).filter(Boolean))].sort();
+    const categories = [...new Set(data.kits.map((k) => k.serviceCategory).filter(Boolean))].sort();
+    const projects = [...new Set(data.kits.map((k) => k.project).filter(Boolean))].sort();
+    return { models, categories, projects };
+  }, [data]);
+
   const filteredKits = useMemo(() => {
     if (!data || !modalFilter) {
       return [];
     }
     const status = modalFilter === "deployed" ? "Deployed" : "In Storage";
-    return data.kits.filter((kit) => kit.status === status);
-  }, [data, modalFilter]);
+    return applyKitFilters(data.kits.filter((kit) => kit.status === status));
+  }, [data, modalFilter, applyKitFilters]);
+
+  const hasActiveFilters = !!(filterModel || filterCategory || filterProject);
+  const pieData = useMemo(() => {
+    if (!data) return [];
+    if (!hasActiveFilters) {
+      return [
+        { name: "Deployed", value: data.totalDeployed, color: PIE_COLORS[0] },
+        { name: "In Storage", value: data.totalUndeployed, color: PIE_COLORS[1] },
+      ].filter((s) => s.value > 0);
+    }
+    const all = applyKitFilters(data.kits);
+    const deployed = all.filter((k) => k.status === "Deployed").length;
+    const storage = all.filter((k) => k.status === "In Storage").length;
+    return [
+      { name: "Deployed", value: deployed, color: PIE_COLORS[0] },
+      { name: "In Storage", value: storage, color: PIE_COLORS[1] },
+    ].filter((s) => s.value > 0);
+  }, [data, hasActiveFilters, applyKitFilters]);
+
+  const shownKits = searchTerm ? globalSearchResults : (data?.kits ?? []);
 
   if (loading) {
     return (
@@ -148,13 +189,6 @@ export default function DashboardPage() {
       </div>
     );
   }
-
-  const pieData = [
-    { name: "Deployed", value: data.totalDeployed, color: PIE_COLORS[0] },
-    { name: "In Storage", value: data.totalUndeployed, color: PIE_COLORS[1] },
-  ].filter((segment) => segment.value > 0);
-
-  const shownKits = searchTerm ? globalSearchResults : data.kits;
 
   return (
     <div className="monitor-root" data-theme={dark ? "dark" : "light"}>
@@ -230,8 +264,20 @@ export default function DashboardPage() {
                   data={pieData}
                   onShowDeployed={() => setModalFilter("deployed")}
                   onShowStorage={() => setModalFilter("storage")}
+                  filters={{
+                    model: filterModel,
+                    category: filterCategory,
+                    project: filterProject,
+                  }}
+                  filterOptions={filterOptions}
+                  onFilterChange={(key, val) => {
+                    if (key === "model") setFilterModel(val);
+                    else if (key === "category") setFilterCategory(val);
+                    else if (key === "project") setFilterProject(val);
+                  }}
+                  onClearFilters={() => { setFilterModel(""); setFilterCategory(""); setFilterProject(""); }}
                 />
-                <BreakdownCard title="Deployed by Generation" items={data.deployedByGen} colorMap={GEN_COLORS} />
+                <BreakdownCard title="Service Categories" items={data.serviceCategories} colorMap={SERVICE_CAT_COLORS} />
               </div>
 
               <div className="flex min-h-0 flex-col gap-3 lg:col-span-4">

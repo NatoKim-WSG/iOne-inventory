@@ -56,7 +56,7 @@ export interface DashboardData {
   totalNew: number;
   totalUsed: number;
   hubSummaries: HubSummary[];
-  deployedByGen: BreakdownItem[];
+  serviceCategories: BreakdownItem[];
   conditionBreakdown: BreakdownItem[];
   modelBreakdown: BreakdownItem[];
   kits: KitInfo[];
@@ -222,21 +222,13 @@ export async function getInventoryData(): Promise<DashboardData> {
     }))
     .sort((a, b) => b.total - a.total);
 
-  // Deployed by generation
-  const genMap = new Map<string, number>();
-  for (const row of deployed) {
-    const ver = row.version.toLowerCase();
-    let gen = "Other";
-    if (ver.includes("gen 3") || ver.includes("gen3") || ver.includes("gen. 3") || ver === "3") {
-      gen = "Gen 3";
-    } else if (ver.includes("gen 2") || ver.includes("gen2") || ver.includes("gen. 2") || ver === "2") {
-      gen = "Gen 2";
-    } else if (ver) {
-      gen = row.version;
-    }
-    genMap.set(gen, (genMap.get(gen) || 0) + 1);
+  // Service Categories breakdown
+  const catMap = new Map<string, number>();
+  for (const row of inventory) {
+    const cat = row.serviceCategory || "Unspecified";
+    catMap.set(cat, (catMap.get(cat) || 0) + 1);
   }
-  const deployedByGen: BreakdownItem[] = Array.from(genMap.entries())
+  const serviceCategories: BreakdownItem[] = Array.from(catMap.entries())
     .map(([label, count]) => ({ label, count }))
     .sort((a, b) => b.count - a.count);
 
@@ -288,7 +280,7 @@ export async function getInventoryData(): Promise<DashboardData> {
     totalNew,
     totalUsed,
     hubSummaries,
-    deployedByGen,
+    serviceCategories,
     conditionBreakdown,
     modelBreakdown,
     kits,
